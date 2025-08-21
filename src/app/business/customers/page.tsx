@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import Sidebar from '@/components/Sidebar';
+import ResponsiveWrapper from '@/components/ResponsiveWrapper';
+import CustomersMobile from './mobile/page';
 import { useRouter } from 'next/navigation';
 import { 
   Customer,
@@ -135,10 +137,11 @@ export default function CustomersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Sidebar type="business" currentPage="customers" />
-      <main className="lg:ml-64 min-h-screen relative">
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 pt-20 lg:pt-6">
+    <ResponsiveWrapper mobileComponent={<CustomersMobile />}>
+      <div className="min-h-screen bg-gray-50">
+        <Sidebar type="business" currentPage="customers" />
+        <main className="lg:ml-64 min-h-screen relative">
+          <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 pt-20 lg:pt-6">
         <div className="mb-8">
           <div className="flex justify-between items-center">
             <div>
@@ -339,8 +342,9 @@ export default function CustomersPage() {
             Showing {filteredAndSortedCustomers.length} of {customers.length} customers
           </div>
         )}
+              </div>
+        </main>
       </div>
-    </main>
-  </div>
+    </ResponsiveWrapper>
   );
 }

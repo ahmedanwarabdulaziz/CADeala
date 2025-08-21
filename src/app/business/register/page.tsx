@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import ResponsiveWrapper from '@/components/ResponsiveWrapper';
+import BusinessRegisterMobile from './mobile/page';
 import { collection, addDoc, getDocs, query, where, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { uploadToImgBB, uploadMultipleToImgBB } from '@/lib/imgbbUtils';
@@ -246,7 +248,8 @@ export default function BusinessRegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <ResponsiveWrapper mobileComponent={<BusinessRegisterMobile />}>
+      <div className="min-h-screen bg-gray-100">
       {/* Header */}
       <header className="bg-navy-blue shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -615,6 +618,7 @@ export default function BusinessRegisterPage() {
           </div>
         </div>
       </main>
-    </div>
+      </div>
+    </ResponsiveWrapper>
   );
 }
