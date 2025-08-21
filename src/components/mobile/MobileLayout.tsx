@@ -17,7 +17,7 @@ import {
 
 interface MobileLayoutProps {
   children: React.ReactNode;
-  userType: 'business' | 'admin';
+  userType: 'business' | 'admin' | 'customer';
 }
 
 export default function MobileLayout({ children, userType }: MobileLayoutProps) {
@@ -89,7 +89,35 @@ export default function MobileLayout({ children, userType }: MobileLayoutProps) 
     }
   ];
 
-  const navigation = userType === 'business' ? businessNavigation : adminNavigation;
+  const customerNavigation = [
+    { 
+      name: 'Dashboard', 
+      icon: BarChart3, 
+      href: '/dashboard' as const,
+      active: pathname === '/dashboard'
+    },
+    { 
+      name: 'Profile', 
+      icon: User, 
+      href: '/business/register' as const,
+      active: pathname === '/business/register'
+    },
+    { 
+      name: 'Upgrade', 
+      icon: Package, 
+      href: '/business/register' as const,
+      active: pathname === '/business/register'
+    },
+    { 
+      name: 'Settings', 
+      icon: Settings, 
+      href: '/business/register' as const,
+      active: pathname === '/business/register'
+    }
+  ];
+
+  const navigation = userType === 'business' ? businessNavigation : 
+                   userType === 'admin' ? adminNavigation : customerNavigation;
 
   const menuItems = userType === 'business' 
     ? [
@@ -98,10 +126,17 @@ export default function MobileLayout({ children, userType }: MobileLayoutProps) 
         { name: 'Profile', icon: User, href: '/business/register' as const },
         { name: 'Help', icon: HelpCircle, href: '/business/register' as const },
       ]
-    : [
+    : userType === 'admin'
+    ? [
         { name: 'Analytics', icon: BarChart3, href: '/admin/dashboard' as const },
         { name: 'Settings', icon: Settings, href: '/admin/categories' as const },
         { name: 'Profile', icon: User, href: '/admin/dashboard' as const },
+        { name: 'Help', icon: HelpCircle, href: '/business/register' as const },
+      ]
+    : [
+        { name: 'Profile', icon: User, href: '/business/register' as const },
+        { name: 'Upgrade', icon: Package, href: '/business/register' as const },
+        { name: 'Settings', icon: Settings, href: '/business/register' as const },
         { name: 'Help', icon: HelpCircle, href: '/business/register' as const },
       ];
 

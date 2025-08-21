@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import Sidebar from '@/components/Sidebar';
+import ResponsiveWrapper from '@/components/ResponsiveWrapper';
+import AdminDashboardMobile from './mobile/page';
 import { 
   Users, 
   Building2, 
@@ -153,12 +155,13 @@ export default function AdminDashboardPage() {
   ];
 
     return (
-    <div className="min-h-screen bg-gray-50">
-      <Sidebar type="admin" currentPage="dashboard" />
+      <ResponsiveWrapper mobileComponent={<AdminDashboardMobile />}>
+        <div className="min-h-screen bg-gray-50">
+          <Sidebar type="admin" currentPage="dashboard" />
 
-      {/* Main Content */}
-      <main className="lg:ml-64 min-h-screen relative">
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 pt-20 lg:pt-6">
+          {/* Main Content */}
+          <main className="lg:ml-64 min-h-screen relative">
+            <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 pt-20 lg:pt-6">
           {/* Welcome Section */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
@@ -316,5 +319,6 @@ export default function AdminDashboardPage() {
         </div>
       </main>
     </div>
+      </ResponsiveWrapper>
   );
 }

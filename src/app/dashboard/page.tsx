@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import ResponsiveWrapper from '@/components/ResponsiveWrapper';
+import CustomerDashboardMobile from './mobile/page';
 
 interface BusinessApplication {
   id: string;
@@ -124,9 +126,10 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <header className="bg-navy-blue shadow-lg">
+    <ResponsiveWrapper mobileComponent={<CustomerDashboardMobile />}>
+      <div className="min-h-screen bg-gray-100">
+        {/* Header */}
+        <header className="bg-navy-blue shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
@@ -314,5 +317,6 @@ export default function DashboardPage() {
         </div>
       </main>
     </div>
+    </ResponsiveWrapper>
   );
 }
