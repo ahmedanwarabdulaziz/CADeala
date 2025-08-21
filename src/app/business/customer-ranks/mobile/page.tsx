@@ -13,7 +13,6 @@ import {
   getCustomerRankStats,
   updateCustomerRank,
   deleteCustomerRank,
-  toggleCustomerRankStatus,
   regenerateCustomerRankQR
 } from '@/lib/customerRankUtils';
 import { 

@@ -17,8 +17,6 @@ import {
   Calendar,
   Mail,
   Phone,
-  User,
-  ArrowUpDown,
   Filter,
   RefreshCw
 } from 'lucide-react';
@@ -311,7 +309,7 @@ export default function CustomersMobile() {
           ) : (
             <div className="divide-y divide-gray-200">
               {filteredAndSortedCustomers.map((customer) => (
-                <div key={customer.id} className="p-4 hover:bg-gray-50">
+                <div key={customer.uid} className="p-4 hover:bg-gray-50">
                   <div className="flex items-start space-x-3">
                     <div className="flex-shrink-0">
                       <div className="h-10 w-10 bg-navy-blue rounded-full flex items-center justify-center">
