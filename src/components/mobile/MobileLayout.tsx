@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { signOut } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
 import { 
   BarChart3, 
   Crown, 
@@ -32,20 +34,25 @@ export default function MobileLayout({ children, userType }: MobileLayoutProps) 
     
     try {
       setIsSigningOut(true);
-      console.log('Signing out...');
+      console.log('Signing out...', { logout: typeof logout, userRole });
       
-      if (logout) {
+      // Try context logout first
+      if (logout && typeof logout === 'function') {
         await logout();
-        console.log('Sign out successful, redirecting...');
+        console.log('Sign out successful via context, redirecting...');
       } else {
-        console.warn('Logout function not available, redirecting anyway...');
+        // Fallback to direct Firebase auth
+        console.warn('Context logout not available, using direct Firebase auth...');
+        await signOut(auth);
+        console.log('Sign out successful via direct Firebase auth, redirecting...');
       }
       
-      router.push('/signin');
+      // Force redirect to signin page
+      window.location.href = '/signin';
     } catch (error) {
       console.error('Error signing out:', error);
       // Still try to redirect even if logout fails
-      router.push('/signin');
+      window.location.href = '/signin';
     } finally {
       setIsSigningOut(false);
     }
