@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, query, orderBy } from 'firebase/firestore';
+import { collection, addDoc, getDocs } from 'firebase/firestore';
 import { db } from './firebase';
 
 export interface TagCategory {

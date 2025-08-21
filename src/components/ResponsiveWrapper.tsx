@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
 
 interface ResponsiveWrapperProps {
   children: React.ReactNode;
@@ -16,7 +15,6 @@ export default function ResponsiveWrapper({
 }: ResponsiveWrapperProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const pathname = usePathname();
 
   useEffect(() => {
     const checkMobile = () => {

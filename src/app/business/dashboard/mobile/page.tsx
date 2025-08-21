@@ -82,14 +82,14 @@ export default function BusinessDashboardMobile() {
     {
       id: 1,
       type: 'customer_joined',
-      message: 'New customer joined "Gold" rank',
+             message: 'New customer joined &quot;Gold&quot; rank',
       time: '2 hours ago',
       icon: <Users className="h-4 w-4 text-green-600" />
     },
     {
       id: 2,
       type: 'customer_upgraded',
-      message: 'Customer "John Smith" upgraded to "Platinum"',
+             message: 'Customer &quot;John Smith&quot; upgraded to &quot;Platinum&quot;',
       time: '4 hours ago',
       icon: <TrendingUp className="h-4 w-4 text-blue-600" />
     },

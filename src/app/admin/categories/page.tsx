@@ -310,14 +310,7 @@ export default function CategoriesPage() {
     }
   };
 
-  const handleSignOut = async () => {
-    try {
-      await logout();
-      router.push('/signin');
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
-  };
+
 
   if (loading || loadingData) {
     return (
@@ -335,7 +328,6 @@ export default function CategoriesPage() {
   }
 
   const currentData = getCurrentData();
-  const totalItems = industries.length + businessTypes.length + serviceCategories.length + productCategories.length;
 
   return (
     <div className="min-h-screen bg-gray-50">
