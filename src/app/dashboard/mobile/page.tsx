@@ -36,7 +36,6 @@ export default function CustomerDashboardMobile() {
     if (!user) return;
     
     try {
-      setLoadingApplication(true);
       const q = query(
         collection(db, 'businessApplications'),
         where('userId', '==', user.uid)
@@ -52,8 +51,6 @@ export default function CustomerDashboardMobile() {
       }
     } catch (error) {
       console.error('Error fetching business application:', error);
-    } finally {
-      setLoadingApplication(false);
     }
   }, [user]);
 
