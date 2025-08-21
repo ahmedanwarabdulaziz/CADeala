@@ -6,6 +6,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import Sidebar from '@/components/Sidebar';
 import ResponsiveWrapper from '@/components/ResponsiveWrapper';
 import AdminDashboardMobile from './mobile/page';
+import LoadingDots from '@/components/LoadingDots';
 import { 
   Users, 
   Building2, 
@@ -118,7 +119,7 @@ export default function AdminDashboardPage() {
   if (loading || !userRole || userRole.role !== 'Admin') {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-navy-blue"></div>
+        <LoadingDots size="lg" color="text-navy-blue" className="mb-4" />
       </div>
     );
   }

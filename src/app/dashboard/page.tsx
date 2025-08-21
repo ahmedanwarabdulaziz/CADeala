@@ -7,6 +7,7 @@ import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import ResponsiveWrapper from '@/components/ResponsiveWrapper';
 import CustomerDashboardMobile from './mobile/page';
+import LoadingDots from '@/components/LoadingDots';
 
 interface BusinessApplication {
   id: string;
@@ -106,7 +107,7 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange mx-auto"></div>
+          <LoadingDots size="lg" color="text-orange" className="mb-4" />
           <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       </div>
@@ -118,7 +119,7 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange mx-auto"></div>
+          <LoadingDots size="lg" color="text-orange" className="mb-4" />
           <p className="mt-4 text-gray-600">Redirecting...</p>
         </div>
       </div>
