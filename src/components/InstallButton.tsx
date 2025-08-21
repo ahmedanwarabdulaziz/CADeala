@@ -148,18 +148,18 @@ export default function InstallButton({
                   <div className="bg-blue-50 p-4 rounded-lg">
                     <h4 className="font-medium text-blue-900 mb-2">📱 Android (Chrome)</h4>
                     <ol className="text-sm text-blue-800 space-y-1">
-                      <li>1. Tap the menu (⋮) in the top right</li>
-                      <li>2. Select "Add to Home screen"</li>
-                      <li>3. Tap "Add" to install</li>
+                                             <li>1. Tap the menu (⋮) in the top right</li>
+                       <li>2. Select &quot;Add to Home screen&quot;</li>
+                       <li>3. Tap &quot;Add&quot; to install</li>
                     </ol>
                   </div>
                   
                   <div className="bg-green-50 p-4 rounded-lg">
                     <h4 className="font-medium text-green-900 mb-2">🍎 iOS (Safari)</h4>
                     <ol className="text-sm text-green-800 space-y-1">
-                      <li>1. Tap the Share button (📤)</li>
-                      <li>2. Select "Add to Home Screen"</li>
-                      <li>3. Tap "Add" to install</li>
+                                             <li>1. Tap the Share button (📤)</li>
+                       <li>2. Select &quot;Add to Home Screen&quot;</li>
+                       <li>3. Tap &quot;Add&quot; to install</li>
                     </ol>
                   </div>
                 </>
@@ -167,9 +167,9 @@ export default function InstallButton({
                 <div className="bg-purple-50 p-4 rounded-lg">
                   <h4 className="font-medium text-purple-900 mb-2">💻 Desktop (Chrome/Edge)</h4>
                   <ol className="text-sm text-purple-800 space-y-1">
-                    <li>1. Look for the install icon in the address bar</li>
-                    <li>2. Click "Install" to add to desktop</li>
-                    <li>3. Or use Ctrl+Shift+I to open install menu</li>
+                                         <li>1. Look for the install icon in the address bar</li>
+                     <li>2. Click &quot;Install&quot; to add to desktop</li>
+                     <li>3. Or use Ctrl+Shift+I to open install menu</li>
                   </ol>
                 </div>
               )}

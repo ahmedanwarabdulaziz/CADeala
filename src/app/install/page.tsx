@@ -70,7 +70,7 @@ export default function InstallPage() {
                 return (
                   <button
                     key={tab.id}
-                    onClick={() => setActiveTab(tab.id as any)}
+                                         onClick={() => setActiveTab(tab.id as 'install' | 'qr' | 'instructions')}
                     className={`
                       py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2
                       ${activeTab === tab.id
@@ -144,11 +144,11 @@ export default function InstallPage() {
                       </li>
                       <li className="flex items-start">
                         <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-0.5">3</span>
-                        Select "Add to Home screen"
+                        Select &quot;Add to Home screen&quot;
                       </li>
                       <li className="flex items-start">
                         <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-0.5">4</span>
-                        Tap "Add" to install the app
+                        Tap &quot;Add&quot; to install the app
                       </li>
                     </ol>
                   </div>
@@ -170,11 +170,11 @@ export default function InstallPage() {
                       </li>
                       <li className="flex items-start">
                         <span className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-0.5">3</span>
-                        Select "Add to Home Screen"
+                        Select &quot;Add to Home Screen&quot;
                       </li>
                       <li className="flex items-start">
                         <span className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-0.5">4</span>
-                        Tap "Add" to install the app
+                        Tap &quot;Add&quot; to install the app
                       </li>
                     </ol>
                   </div>
@@ -196,7 +196,7 @@ export default function InstallPage() {
                       </li>
                       <li className="flex items-start">
                         <span className="bg-purple-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-0.5">3</span>
-                        Click "Install" to add to your desktop
+                        Click &quot;Install&quot; to add to your desktop
                       </li>
                       <li className="flex items-start">
                         <span className="bg-purple-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-0.5">4</span>
