@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import MobileLayout from '@/components/mobile/MobileLayout';
@@ -46,7 +46,7 @@ export default function ReferralsMobile() {
     loadReferralData();
   }, [user, userRole, loading, router, loadReferralData]);
 
-  const loadReferralData = async () => {
+  const loadReferralData = useCallback(async () => {
     if (!user || !userRole) return;
 
     try {
@@ -95,7 +95,7 @@ export default function ReferralsMobile() {
     } finally {
       setLoadingData(false);
     }
-  };
+  }, [user, userRole]);
 
   const handleCopyLink = async () => {
     if (!referralCode) return;

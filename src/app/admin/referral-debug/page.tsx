@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
@@ -55,13 +55,7 @@ export default function ReferralDebugPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [loadingData, setLoadingData] = useState(true);
 
-  // Redirect if not admin
-  if (!loading && (!userRole || userRole.role !== 'Admin')) {
-    router.push('/dashboard');
-    return null;
-  }
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     try {
       setLoadingData(true);
       
@@ -94,11 +88,20 @@ export default function ReferralDebugPage() {
     } finally {
       setLoadingData(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
+    if (!loading && (!userRole || userRole.role !== 'Admin')) {
+      router.push('/dashboard');
+      return;
+    }
     loadData();
-  }, [loadData]);
+  }, [loadData, loading, userRole, router]);
+
+  // Redirect if not admin
+  if (!loading && (!userRole || userRole.role !== 'Admin')) {
+    return null;
+  }
 
   if (loading || loadingData) {
     return (

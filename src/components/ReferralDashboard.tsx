@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
   Share2, 
@@ -37,7 +37,7 @@ export default function ReferralDashboard() {
     }
   }, [user, userRole, loadReferralData]);
 
-  const loadReferralData = async () => {
+  const loadReferralData = useCallback(async () => {
     if (!user || !userRole) return;
 
     try {
@@ -86,7 +86,7 @@ export default function ReferralDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, userRole]);
 
   const handleCopyLink = async () => {
     if (!referralCode) return;
