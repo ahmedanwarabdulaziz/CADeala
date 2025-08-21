@@ -4,14 +4,14 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import MobileLayout from '@/components/mobile/MobileLayout';
 import { useRouter } from 'next/navigation';
-import { 
-  Users, 
-  Building, 
-  FileText, 
-  Settings, 
-  BarChart3, 
-  RefreshCw 
+import {
+  Users,
+  Building,
+  FileText,
+  Settings,
+  BarChart3
 } from 'lucide-react';
+import LoadingDots from '@/components/LoadingDots';
 
 export default function AdminDashboardMobile() {
   const { userRole, loading } = useAuth();
@@ -79,20 +79,20 @@ export default function AdminDashboardMobile() {
     }
   ];
 
-  if (loading || !userRole || userRole.role !== 'Admin') {
-    return (
-      <MobileLayout userType="admin">
-        <div className="p-4">
-          <div className="flex items-center justify-center h-64">
-            <div className="text-center">
-              <RefreshCw className="h-8 w-8 text-orange animate-spin mx-auto mb-2" />
-              <p className="text-gray-600">Loading...</p>
-            </div>
-          </div>
-        </div>
-      </MobileLayout>
-    );
-  }
+                if (loading || !userRole || userRole.role !== 'Admin') {
+                return (
+                  <MobileLayout userType="admin">
+                    <div className="p-4">
+                      <div className="flex items-center justify-center h-64">
+                        <div className="text-center">
+                          <LoadingDots size="lg" color="text-orange" className="mb-4" />
+                          <p className="text-gray-600">Loading...</p>
+                        </div>
+                      </div>
+                    </div>
+                  </MobileLayout>
+                );
+              }
 
   return (
     <MobileLayout userType="admin">

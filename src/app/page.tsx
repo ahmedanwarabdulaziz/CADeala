@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import MainLoading from '@/components/MainLoading';
 
 export default function HomePage() {
   const { user, userRole, loading } = useAuth();
@@ -26,23 +27,9 @@ export default function HomePage() {
   }, [user, userRole, loading, router]);
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading CADeala...</p>
-        </div>
-      </div>
-    );
+    return <MainLoading message="Loading CADeala..." />;
   }
 
   // Show loading while redirecting
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange mx-auto"></div>
-        <p className="mt-4 text-gray-600">Redirecting...</p>
-      </div>
-    </div>
-  );
+  return <MainLoading message="Redirecting..." />;
 }

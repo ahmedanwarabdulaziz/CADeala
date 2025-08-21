@@ -4,16 +4,16 @@ import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import MobileLayout from '@/components/mobile/MobileLayout';
 import { useRouter } from 'next/navigation';
-import { 
-  User, 
-  Building, 
-  FileText, 
-  Settings, 
-  RefreshCw,
+import {
+  User,
+  Building,
+  FileText,
+  Settings,
   Crown,
   Calendar,
   Mail
 } from 'lucide-react';
+import LoadingDots from '@/components/LoadingDots';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
@@ -136,7 +136,7 @@ export default function CustomerDashboardMobile() {
         <div className="p-4">
           <div className="flex items-center justify-center h-64">
             <div className="text-center">
-              <RefreshCw className="h-8 w-8 text-orange animate-spin mx-auto mb-2" />
+              <LoadingDots size="lg" color="text-orange" className="mb-4" />
               <p className="text-gray-600">Loading...</p>
             </div>
           </div>
