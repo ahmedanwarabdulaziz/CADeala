@@ -138,39 +138,12 @@ export default function MobileLayout({ children, userType }: MobileLayoutProps) 
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Mobile Header */}
       <header className="bg-white shadow-sm border-b border-gray-200 px-4 py-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <img 
-              src="/CADEALA LOGO.png" 
-              alt="CADeala Logo" 
-              className="h-8 w-auto"
-            />
-            <div>
-              <h1 className="text-lg font-bold text-gray-900">CADeala</h1>
-              <p className="text-xs text-gray-500 capitalize">{userType}</p>
-            </div>
-          </div>
-          
-          <div className="flex items-center space-x-2">
-            <a
-              href="/signin"
-              onClick={(e) => {
-                e.preventDefault();
-                localStorage.clear();
-                sessionStorage.clear();
-                window.location.replace('/signin');
-              }}
-              className="p-1 text-gray-600 hover:text-red-600 transition-colors"
-              title="Sign Out"
-            >
-              <LogOut className="h-5 w-5" />
-            </a>
-            <div className="h-8 w-8 rounded-full bg-navy-blue flex items-center justify-center">
-              <span className="text-white font-semibold text-sm">
-                {userRole?.name?.charAt(0).toUpperCase()}
-              </span>
-            </div>
-          </div>
+        <div className="flex items-center justify-center">
+          <img 
+            src="/CADEALA LOGO.png" 
+            alt="CADeala Logo" 
+            className="h-8 w-auto"
+          />
         </div>
       </header>
 

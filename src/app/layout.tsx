@@ -75,6 +75,8 @@ export default function RootLayout({
         <link rel="icon" href="/Mobile Icon.png" />
         <link rel="shortcut icon" href="/Mobile Icon.png" />
         <link rel="apple-touch-icon" href="/Mobile Icon.png" />
+        <link rel="apple-touch-icon" sizes="192x192" href="/Mobile Icon.png" />
+        <link rel="apple-touch-icon" sizes="512x512" href="/Mobile Icon.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="CADeala" />
