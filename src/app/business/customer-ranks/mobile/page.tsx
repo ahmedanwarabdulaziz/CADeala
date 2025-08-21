@@ -126,17 +126,7 @@ export default function CustomerRanksMobile() {
     }
   };
 
-  const handleToggleStatus = async (rankId: string) => {
-    try {
-      const rank = customerRanks.find(r => r.id === rankId);
-      if (rank) {
-        await toggleCustomerRankStatus(rankId, !rank.isActive);
-        await loadCustomerRanks();
-      }
-    } catch (error) {
-      console.error('Error toggling rank status:', error);
-    }
-  };
+
 
   const handleRegenerateQR = async (rankId: string) => {
     try {
@@ -318,10 +308,10 @@ export default function CustomerRanksMobile() {
                         <Edit className="h-4 w-4" />
                         <span>Edit</span>
                       </button>
-                      <button
-                        onClick={() => handleDeleteRank(rank.id)}
-                        className="flex items-center space-x-1 px-3 py-1 text-sm text-red-600 hover:bg-red-50 rounded-lg"
-                      >
+                                             <button
+                         onClick={() => rank.id && handleDeleteRank(rank.id)}
+                         className="flex items-center space-x-1 px-3 py-1 text-sm text-red-600 hover:bg-red-50 rounded-lg"
+                       >
                         <Trash2 className="h-4 w-4" />
                         <span>Delete</span>
                       </button>
@@ -463,10 +453,10 @@ export default function CustomerRanksMobile() {
                     <Copy className="h-4 w-4" />
                     <span>Copy Signup Link</span>
                   </button>
-                  <button
-                    onClick={() => handleRegenerateQR(selectedRank.id)}
-                    className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
-                  >
+                                     <button
+                     onClick={() => selectedRank.id && handleRegenerateQR(selectedRank.id)}
+                     className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
+                   >
                     <RefreshCw className="h-4 w-4" />
                     <span>Regenerate QR Code</span>
                   </button>
