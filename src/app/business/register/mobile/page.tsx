@@ -150,7 +150,6 @@ export default function BusinessRegisterMobile() {
     if (!files || files.length === 0) return;
     
     try {
-      setUploadingFiles(true);
       setUploadProgress('Uploading files...');
       
       if (field === 'certifications' || field === 'businessPhotos') {
@@ -181,8 +180,6 @@ export default function BusinessRegisterMobile() {
       console.error('Error uploading files:', error);
       setUploadProgress('Upload failed. Please try again.');
       setTimeout(() => setUploadProgress(''), 3000);
-    } finally {
-      setUploadingFiles(false);
     }
   };
 

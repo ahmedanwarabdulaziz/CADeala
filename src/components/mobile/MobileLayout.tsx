@@ -26,27 +26,8 @@ export default function MobileLayout({ children, userType }: MobileLayoutProps) 
   const pathname = usePathname();
   const { userRole } = useAuth();
   const [showMenu, setShowMenu] = useState(false);
-  const [isSigningOut, setIsSigningOut] = useState(false);
 
-  const handleSignOut = () => {
-    if (isSigningOut) return; // Prevent multiple clicks
-    
-    try {
-      setIsSigningOut(true);
-      console.log('Starting sign out process...');
-      
-      // Clear any local storage or session data
-      localStorage.clear();
-      sessionStorage.clear();
-      
-      // Use a simple approach - just redirect and let the auth context handle the rest
-      window.location.replace('/signin');
-    } catch (error) {
-      console.error('Error during sign out:', error);
-      // Force redirect anyway
-      window.location.replace('/signin');
-    }
-  };
+
 
   const businessNavigation = [
     { 
