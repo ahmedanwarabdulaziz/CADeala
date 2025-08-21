@@ -102,8 +102,6 @@ export default function Sidebar({ type, currentPage = 'dashboard' }: SidebarProp
                   <div className="mt-2">
                     <InstallButton variant="icon" showInstructions={false} />
                   </div>
-                </div>
-              )}
                   <p className="text-xs text-gray-500 capitalize">{type}</p>
                 </div>
               )}
