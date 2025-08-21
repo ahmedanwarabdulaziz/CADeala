@@ -238,7 +238,14 @@ export default function MobileLayout({ children, userType }: MobileLayoutProps) 
       {/* Menu Overlay */}
       {showMenu && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
-          <div className="absolute bottom-20 left-4 right-4 bg-white rounded-lg shadow-lg border border-gray-200">
+          {/* Close overlay - positioned first so it doesn't interfere with menu */}
+          <div 
+            className="absolute inset-0" 
+            onClick={() => setShowMenu(false)}
+          />
+          
+          {/* Menu content - positioned on top */}
+          <div className="absolute bottom-20 left-4 right-4 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
             <div className="p-4">
               <div className="space-y-2">
                 {menuItems.map((item) => {
@@ -246,7 +253,8 @@ export default function MobileLayout({ children, userType }: MobileLayoutProps) 
                   return (
                     <button
                       key={item.name}
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation();
                         router.push(item.href);
                         setShowMenu(false);
                       }}
@@ -260,7 +268,9 @@ export default function MobileLayout({ children, userType }: MobileLayoutProps) 
                 
                 <div className="border-t border-gray-200 pt-2 mt-2">
                   <button
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      console.log('Sign out button clicked!');
                       localStorage.clear();
                       sessionStorage.clear();
                       window.location.replace('/signin');
@@ -274,12 +284,6 @@ export default function MobileLayout({ children, userType }: MobileLayoutProps) 
               </div>
             </div>
           </div>
-          
-          {/* Close overlay */}
-          <div 
-            className="absolute inset-0" 
-            onClick={() => setShowMenu(false)}
-          />
         </div>
       )}
     </div>
