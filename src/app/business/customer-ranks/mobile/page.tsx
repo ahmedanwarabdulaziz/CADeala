@@ -102,7 +102,7 @@ export default function CustomerRanksMobile() {
   };
 
   const handleEditRank = async () => {
-    if (!selectedRank) return;
+    if (!selectedRank || !selectedRank.id) return;
     
     try {
       setProcessing(true);
