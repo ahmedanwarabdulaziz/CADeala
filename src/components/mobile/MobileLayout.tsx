@@ -92,10 +92,10 @@ export default function MobileLayout({ children, userType }: MobileLayoutProps) 
   const navigation = userType === 'business' ? businessNavigation : adminNavigation;
 
   const menuItems = [
-    { name: 'Analytics', icon: BarChart3, href: userType === 'business' ? '/business/dashboard' : '/admin/dashboard' },
-    { name: 'Settings', icon: Settings, href: userType === 'business' ? '/business/register' : '/admin/categories' },
-    { name: 'Profile', icon: User, href: userType === 'business' ? '/business/register' : '/admin/dashboard' },
-    { name: 'Help', icon: HelpCircle, href: '/business/register' },
+    { name: 'Analytics', icon: BarChart3, href: (userType === 'business' ? '/business/dashboard' : '/admin/dashboard') as const },
+    { name: 'Settings', icon: Settings, href: (userType === 'business' ? '/business/register' : '/admin/categories') as const },
+    { name: 'Profile', icon: User, href: (userType === 'business' ? '/business/register' : '/admin/dashboard') as const },
+    { name: 'Help', icon: HelpCircle, href: '/business/register' as const },
   ];
 
   return (
