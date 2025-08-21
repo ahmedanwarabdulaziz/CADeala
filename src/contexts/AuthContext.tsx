@@ -118,12 +118,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         // Add business association if provided
         if (businessAssociation) {
+          console.log('Setting business association:', businessAssociation);
           userData.businessAssociation = {
             ...businessAssociation,
             assignedBy: 'business' as const,
             assignedAt: new Date()
           };
           userData.isPublicCustomer = false;
+          console.log('User data with business association:', userData);
         }
 
         try {

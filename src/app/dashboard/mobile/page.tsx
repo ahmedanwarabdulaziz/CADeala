@@ -10,7 +10,8 @@ import {
   Settings,
   Crown,
   Calendar,
-  Mail
+  Mail,
+  Share2
 } from 'lucide-react';
 import LoadingDots from '@/components/LoadingDots';
 import { collection, query, where, getDocs } from 'firebase/firestore';
@@ -108,6 +109,13 @@ export default function CustomerDashboardMobile() {
       description: 'Apply to become a business owner', 
       icon: <Building className="h-5 w-5" />, 
       onClick: () => router.push('/business/register'), 
+      variant: 'primary' as const 
+    },
+    { 
+      title: 'My Referrals', 
+      description: 'View your successful referrals', 
+      icon: <Share2 className="h-5 w-5" />, 
+      onClick: () => router.push('/referrals'), 
       variant: 'primary' as const 
     },
     { 

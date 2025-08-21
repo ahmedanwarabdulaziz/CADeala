@@ -33,6 +33,10 @@ interface Customer {
     assignedBy: 'business' | 'admin';
     assignedAt: Date;
   };
+  // Business owner fields
+  businessName?: string;
+  businessReferenceCode?: string;
+  businessId?: string;
   isPublicCustomer?: boolean;
   createdAt: Date;
 }
@@ -193,6 +197,47 @@ export default function AdminCustomerManagementPage() {
         Public Customer
       </span>;
     }
+  };
+
+  const getBusinessInfo = (customer: Customer) => {
+    if (customer.role === 'Business') {
+      return (
+        <div className="flex items-center">
+          <Building2 className="h-4 w-4 text-green-500 mr-2" />
+          <div>
+            <div className="text-sm font-medium text-gray-900">
+              {customer.businessName || customer.businessReferenceCode || 'Business'}
+            </div>
+            <div className="text-xs text-gray-500">
+              Business Owner
+            </div>
+          </div>
+        </div>
+      );
+    }
+    
+    if (customer.role === 'Customer') {
+      if (customer.businessAssociation) {
+        return (
+          <div className="flex items-center">
+            <Building2 className="h-4 w-4 text-purple-500 mr-2" />
+            <div>
+              <div className="text-sm font-medium text-gray-900">
+                {customer.businessAssociation.businessReferenceCode}
+              </div>
+              <div className="text-xs text-gray-500">
+                {customer.businessAssociation.rankName}
+              </div>
+            </div>
+          </div>
+        );
+      } else {
+        return <span className="text-sm text-gray-400">Public Customer</span>;
+      }
+    }
+    
+    // For Admin role
+    return <span className="text-sm text-gray-400">-</span>;
   };
 
   if (loading || !userRole || userRole.role !== 'Admin') {
@@ -378,6 +423,9 @@ export default function AdminCustomerManagementPage() {
                         Status
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Business
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Contact
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -416,6 +464,9 @@ export default function AdminCustomerManagementPage() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           {getStatusBadge(customer)}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {getBusinessInfo(customer)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm text-gray-900">

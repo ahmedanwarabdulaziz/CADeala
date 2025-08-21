@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { validateSignupLink, CustomerRank } from '@/lib/customerRankUtils';
+import { getReferralCodeByCode, createReferralRecord, createOrGetReferralRank } from '@/lib/referralUtils';
+import { auth } from '@/lib/firebase';
 import { CheckCircle, AlertCircle } from 'lucide-react';
 
 function SignUpPageContent() {
@@ -15,6 +17,7 @@ function SignUpPageContent() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [businessRank, setBusinessRank] = useState<CustomerRank | null>(null);
+  const [referralCode, setReferralCode] = useState<string | null>(null);
   const [validatingLink, setValidatingLink] = useState(true);
   const { signUp } = useAuth();
   const router = useRouter();
@@ -25,6 +28,7 @@ function SignUpPageContent() {
     const validateBusinessLink = async () => {
       const business = searchParams.get('business');
       const rank = searchParams.get('rank');
+      const ref = searchParams.get('ref');
 
       if (business && rank) {
         try {
@@ -41,9 +45,32 @@ function SignUpPageContent() {
         } finally {
           setValidatingLink(false);
         }
-      } else {
-        setValidatingLink(false);
-      }
+             } else if (ref) {
+         // Handle referral code
+         try {
+           setValidatingLink(true);
+           const referralData = await getReferralCodeByCode(ref);
+           if (referralData) {
+             setReferralCode(ref);
+                           // Create or get the referral rank for this business
+              const referralRank = await createOrGetReferralRank(
+                referralData.businessId,
+                referralData.businessName
+              );
+              setBusinessRank(referralRank);
+           } else {
+             // Don't show error for invalid referral codes, just continue with normal signup
+             console.warn('Invalid referral code:', ref);
+           }
+         } catch (error) {
+           console.error('Error validating referral code:', error);
+           // Don't show error for referral validation issues, just continue with normal signup
+         } finally {
+           setValidatingLink(false);
+         }
+       } else {
+         setValidatingLink(false);
+       }
     };
 
     validateBusinessLink();
@@ -63,6 +90,41 @@ function SignUpPageContent() {
           rankId: businessRank.id!,
           rankName: businessRank.name
         });
+
+        // Create referral record if this is a referral signup
+        if (referralCode && businessRank.name === 'Referral') {
+          try {
+            console.log('Processing referral signup with code:', referralCode);
+            const referralData = await getReferralCodeByCode(referralCode);
+            console.log('Referral data found:', referralData);
+            
+            if (referralData) {
+              // Get the newly created user's UID
+              const user = auth.currentUser;
+              console.log('Current user:', user?.uid);
+              
+              if (user) {
+                // Create the referral record with completed status immediately
+                const referralRecordId = await createReferralRecord(
+                  referralData.userId,
+                  referralData.userEmail,
+                  user.uid, // Use the actual user ID
+                  email,
+                  referralData.businessId,
+                  referralData.businessName,
+                  referralCode
+                );
+                console.log('Referral record created with ID:', referralRecordId);
+                console.log('Referral record completed successfully');
+              }
+            } else {
+              console.warn('No referral data found for code:', referralCode);
+            }
+          } catch (referralError) {
+            console.error('Error creating referral record:', referralError);
+            // Don't block signup if referral creation fails
+          }
+        }
       } else {
         await signUp(email, password, name, phone || undefined);
       }

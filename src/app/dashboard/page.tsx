@@ -5,9 +5,11 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { Share2 } from 'lucide-react';
 import ResponsiveWrapper from '@/components/ResponsiveWrapper';
 import CustomerDashboardMobile from './mobile/page';
 import LoadingDots from '@/components/LoadingDots';
+import ReferralDashboard from '@/components/ReferralDashboard';
 
 interface BusinessApplication {
   id: string;
@@ -255,6 +257,30 @@ export default function DashboardPage() {
             </div>
           </div>
         )}
+
+        {/* Referral Dashboard */}
+        <div className="mb-6">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center space-x-3">
+                <div className="bg-orange/10 rounded-full p-2">
+                  <Share2 className="h-6 w-6 text-orange" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900">Invite Friends</h2>
+                  <p className="text-sm text-gray-600">Share your referral link and earn rewards</p>
+                </div>
+              </div>
+              <button
+                onClick={() => router.push('/referrals')}
+                className="px-4 py-2 bg-orange text-white rounded-lg hover:bg-orange-600 transition-colors text-sm font-medium"
+              >
+                View All Referrals
+              </button>
+            </div>
+            <ReferralDashboard />
+          </div>
+        </div>
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

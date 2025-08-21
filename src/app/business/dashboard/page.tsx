@@ -240,6 +240,10 @@ export default function BusinessDashboardPage() {
                     <span className="w-2 h-2 bg-orange rounded-full mr-3"></span>
                     Set up payment and shipping options
                   </li>
+                  <li className="flex items-center text-gray-600">
+                    <span className="w-2 h-2 bg-orange rounded-full mr-3"></span>
+                    Enable referral system for customer growth
+                  </li>
                 </ul>
               </div>
 

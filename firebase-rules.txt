@@ -67,16 +67,50 @@ service cloud.firestore {
     }
     
     // Business applications - allow users to read/write their own applications
-    match /businessApplications/{document} {
-      // Users can read/write their own applications
-      allow read, write: if request.auth != null && 
-        resource.data.userId == request.auth.uid;
-      
-      // Admins can read/write all applications
-      allow read, write: if request.auth != null && 
-        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
-        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'Admin';
-    }
+match /businessApplications/{document} {
+  // Users can read/write their own applications
+  allow read, write: if request.auth != null && 
+    resource.data.userId == request.auth.uid;
+  
+  // Admins can read/write all applications
+  allow read, write: if request.auth != null && 
+    exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+    get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'Admin';
+}
+
+// Referral codes - allow users to read their own codes and create new ones
+match /referralCodes/{document} {
+  // Users can read their own referral codes
+  allow read: if request.auth != null && 
+    resource.data.userId == request.auth.uid;
+  
+  // Users can create their own referral codes
+  allow create: if request.auth != null && 
+    request.resource.data.userId == request.auth.uid;
+  
+  // Allow reading referral codes for validation (anonymous access for signup)
+  allow read: if true;
+  
+  // Admins can read/write all referral codes
+  allow read, write: if request.auth != null && 
+    exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+    get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'Admin';
+}
+
+// Referrals - allow users to read their own referrals and create new ones
+match /referrals/{document} {
+  // Users can read their own referrals (as referrer)
+  allow read: if request.auth != null && 
+    resource.data.referrerId == request.auth.uid;
+  
+  // Users can create referral records
+  allow create: if request.auth != null;
+  
+  // Admins can read/write all referrals
+  allow read, write: if request.auth != null && 
+    exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+    get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'Admin';
+}
     
     // Customer ranks - allow business owners to manage their own ranks
     match /customerRanks/{document} {

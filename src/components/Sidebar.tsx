@@ -16,7 +16,8 @@ import {
   BarChart3,
   Package,
   ShoppingCart,
-  CreditCard
+  CreditCard,
+  Settings
 } from 'lucide-react';
 import InstallButton from './InstallButton';
 
@@ -47,6 +48,8 @@ export default function Sidebar({ type, currentPage = 'dashboard' }: SidebarProp
     { name: 'Categories', href: '/admin/categories', icon: Building2, current: currentPage === 'categories' },
     { name: 'Tag Categories', href: '/admin/tag-categories', icon: Tags, current: currentPage === 'tag-categories' },
     { name: 'Tags', href: '/admin/tags', icon: Tags, current: currentPage === 'tags' },
+    { name: 'Referral Setup', href: '/admin/referral-setup', icon: Settings, current: currentPage === 'referral-setup' },
+    { name: 'Referral Debug', href: '/admin/referral-debug', icon: Settings, current: currentPage === 'referral-debug' },
   ];
 
   const businessNavigationItems = [

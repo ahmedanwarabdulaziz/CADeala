@@ -1,5 +1,6 @@
 import { doc, updateDoc, getDocs, query, collection, where } from 'firebase/firestore';
 import { db } from './firebase';
+import { createOrGetReferralRank } from './referralUtils';
 
 export const generateBusinessReferenceCode = async (): Promise<string> => {
   const year = new Date().getFullYear();
@@ -23,6 +24,18 @@ export const approveBusinessApplication = async (
   adminNotes?: string
 ): Promise<void> => {
   try {
+    // Get business name from the application
+    const applicationDoc = await getDocs(query(
+      collection(db, 'businessRegistrations'),
+      where('__name__', '==', applicationId)
+    ));
+    
+    let businessName = 'Business';
+    if (!applicationDoc.empty) {
+      const appData = applicationDoc.docs[0].data();
+      businessName = appData.businessName || 'Business';
+    }
+
     // Update the business application
     await updateDoc(doc(db, 'businessRegistrations', applicationId), {
       status: 'approved',
@@ -37,8 +50,12 @@ export const approveBusinessApplication = async (
       role: 'Business',
       businessReferenceCode,
       businessId: applicationId,
+      businessName: businessName,
       updatedAt: new Date()
     });
+
+    // Create referral rank for the new business
+    await createOrGetReferralRank(applicationId, businessName);
 
   } catch (error) {
     console.error('Error approving business application:', error);
