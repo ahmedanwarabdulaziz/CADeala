@@ -39,26 +39,26 @@ export default function MobileLayout({ children, userType }: MobileLayoutProps) 
     { 
       name: 'Dashboard', 
       icon: BarChart3, 
-      href: '/business/dashboard',
+      href: '/business/dashboard' as const,
       active: pathname === '/business/dashboard'
     },
     { 
       name: 'Ranks', 
       icon: Crown, 
-      href: '/business/customer-ranks',
+      href: '/business/customer-ranks' as const,
       active: pathname === '/business/customer-ranks'
     },
     { 
       name: 'Customers', 
       icon: Users, 
-      href: '/business/customers',
+      href: '/business/customers' as const,
       active: pathname === '/business/customers'
     },
     { 
-      name: 'Products', 
+      name: 'Profile', 
       icon: Package, 
-      href: '/business/products',
-      active: pathname === '/business/products'
+      href: '/business/register' as const,
+      active: pathname === '/business/register'
     }
   ];
 
@@ -66,25 +66,25 @@ export default function MobileLayout({ children, userType }: MobileLayoutProps) 
     { 
       name: 'Dashboard', 
       icon: BarChart3, 
-      href: '/admin/dashboard',
+      href: '/admin/dashboard' as const,
       active: pathname === '/admin/dashboard'
     },
     { 
       name: 'Customers', 
       icon: Users, 
-      href: '/admin/customer-management',
+      href: '/admin/customer-management' as const,
       active: pathname === '/admin/customer-management'
     },
     { 
       name: 'Applications', 
       icon: Package, 
-      href: '/admin/business-applications',
+      href: '/admin/business-applications' as const,
       active: pathname === '/admin/business-applications'
     },
     { 
       name: 'Settings', 
       icon: Settings, 
-      href: '/admin/categories',
+      href: '/admin/categories' as const,
       active: pathname.startsWith('/admin/categories') || pathname.startsWith('/admin/tags')
     }
   ];
@@ -92,10 +92,10 @@ export default function MobileLayout({ children, userType }: MobileLayoutProps) 
   const navigation = userType === 'business' ? businessNavigation : adminNavigation;
 
   const menuItems = [
-    { name: 'Analytics', icon: BarChart3, href: userType === 'business' ? '/business/analytics' : '/admin/analytics' },
-    { name: 'Settings', icon: Settings, href: userType === 'business' ? '/business/settings' : '/admin/settings' },
-    { name: 'Profile', icon: User, href: userType === 'business' ? '/business/profile' : '/admin/profile' },
-    { name: 'Help', icon: HelpCircle, href: '/help' },
+    { name: 'Analytics', icon: BarChart3, href: userType === 'business' ? '/business/dashboard' : '/admin/dashboard' },
+    { name: 'Settings', icon: Settings, href: userType === 'business' ? '/business/register' : '/admin/categories' },
+    { name: 'Profile', icon: User, href: userType === 'business' ? '/business/register' : '/admin/dashboard' },
+    { name: 'Help', icon: HelpCircle, href: '/business/register' },
   ];
 
   return (

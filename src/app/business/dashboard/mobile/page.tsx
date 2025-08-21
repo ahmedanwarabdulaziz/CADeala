@@ -10,7 +10,6 @@ import {
   Crown, 
   TrendingUp, 
   ShoppingCart,
-  Plus,
   BarChart3,
   Settings,
   RefreshCw
