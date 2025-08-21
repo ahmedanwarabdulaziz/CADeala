@@ -29,7 +29,7 @@ export default function MobileLayout({ children, userType }: MobileLayoutProps) 
   const [showMenu, setShowMenu] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
 
-  const handleSignOut = async () => {
+  const handleSignOut = () => {
     if (isSigningOut) return; // Prevent multiple clicks
     
     try {
@@ -40,18 +40,12 @@ export default function MobileLayout({ children, userType }: MobileLayoutProps) 
       localStorage.clear();
       sessionStorage.clear();
       
-      // Sign out from Firebase directly
-      await signOut(auth);
-      console.log('Firebase sign out completed');
-      
-      // Force page reload to clear all state
-      window.location.href = '/signin';
+      // Use a simple approach - just redirect and let the auth context handle the rest
+      window.location.replace('/signin');
     } catch (error) {
       console.error('Error during sign out:', error);
       // Force redirect anyway
-      window.location.href = '/signin';
-    } finally {
-      setIsSigningOut(false);
+      window.location.replace('/signin');
     }
   };
 
@@ -178,18 +172,19 @@ export default function MobileLayout({ children, userType }: MobileLayoutProps) 
           </div>
           
           <div className="flex items-center space-x-2">
-            <button
-              onClick={handleSignOut}
-              disabled={isSigningOut}
+            <a
+              href="/signin"
+              onClick={(e) => {
+                e.preventDefault();
+                localStorage.clear();
+                sessionStorage.clear();
+                window.location.replace('/signin');
+              }}
               className="p-1 text-gray-600 hover:text-red-600 transition-colors"
               title="Sign Out"
             >
-              {isSigningOut ? (
-                <div className="h-5 w-5 animate-spin rounded-full border-2 border-red-600 border-t-transparent" />
-              ) : (
-                <LogOut className="h-5 w-5" />
-              )}
-            </button>
+              <LogOut className="h-5 w-5" />
+            </a>
             <div className="h-8 w-8 rounded-full bg-navy-blue flex items-center justify-center">
               <span className="text-white font-semibold text-sm">
                 {userRole?.name?.charAt(0).toUpperCase()}
@@ -263,22 +258,21 @@ export default function MobileLayout({ children, userType }: MobileLayoutProps) 
                   );
                 })}
                 
-                <div className="border-t border-gray-200 pt-2 mt-2">
-                  <button
-                    onClick={handleSignOut}
-                    disabled={isSigningOut}
-                    className="flex items-center w-full px-3 py-3 text-left text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isSigningOut ? (
-                      <div className="h-5 w-5 mr-3 animate-spin rounded-full border-2 border-red-600 border-t-transparent" />
-                    ) : (
-                      <LogOut className="h-5 w-5 mr-3" />
-                    )}
-                    <span className="font-medium">
-                      {isSigningOut ? 'Signing Out...' : 'Sign Out'}
-                    </span>
-                  </button>
-                </div>
+                                            <div className="border-t border-gray-200 pt-2 mt-2">
+                              <a
+                                href="/signin"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  localStorage.clear();
+                                  sessionStorage.clear();
+                                  window.location.replace('/signin');
+                                }}
+                                className="flex items-center w-full px-3 py-3 text-left text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
+                              >
+                                <LogOut className="h-5 w-5 mr-3" />
+                                <span className="font-medium">Sign Out</span>
+                              </a>
+                            </div>
               </div>
             </div>
           </div>
