@@ -1,6 +1,7 @@
 import QRCode from 'qrcode';
 import { collection, addDoc, updateDoc, deleteDoc, doc, getDocs, query, where } from 'firebase/firestore';
 import { db } from './firebase';
+import { appConfig } from '@/config/app';
 
 export interface CustomerRank {
   id?: string;
@@ -66,8 +67,7 @@ export const generateQRCode = async (signupLink: string): Promise<string> => {
 
 // Generate signup link for a business and rank
 export const generateSignupLink = (businessReferenceCode: string, rankName: string): string => {
-  const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
-  return `${baseUrl}/signup?business=${businessReferenceCode}&rank=${encodeURIComponent(rankName)}`;
+  return appConfig.getSignupUrl(businessReferenceCode, rankName);
 };
 
 // Create a new customer rank
@@ -260,15 +260,39 @@ export const regenerateCustomerRankQR = async (rankId: string): Promise<void> =>
     
     if (!rankDoc.empty) {
       const rank = rankDoc.docs[0].data() as CustomerRank;
-      const newQrCodeUrl = await generateQRCode(rank.signupLink);
+      // Regenerate the signup link with current domain
+      const newSignupLink = generateSignupLink(rank.businessReferenceCode, rank.name);
+      const newQrCodeUrl = await generateQRCode(newSignupLink);
       
       await updateDoc(doc(db, 'customerRanks', rankId), {
+        signupLink: newSignupLink,
         qrCodeUrl: newQrCodeUrl,
         updatedAt: new Date()
       });
     }
   } catch (error) {
     console.error('Error regenerating QR code:', error);
+    throw error;
+  }
+};
+
+// Regenerate all signup links for a business (useful when domain changes)
+export const regenerateAllBusinessSignupLinks = async (businessId: string): Promise<void> => {
+  try {
+    const ranks = await getCustomerRanks(businessId);
+    
+    for (const rank of ranks) {
+      const newSignupLink = generateSignupLink(rank.businessReferenceCode, rank.name);
+      const newQrCodeUrl = await generateQRCode(newSignupLink);
+      
+      await updateDoc(doc(db, 'customerRanks', rank.id!), {
+        signupLink: newSignupLink,
+        qrCodeUrl: newQrCodeUrl,
+        updatedAt: new Date()
+      });
+    }
+  } catch (error) {
+    console.error('Error regenerating all signup links:', error);
     throw error;
   }
 };

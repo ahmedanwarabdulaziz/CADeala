@@ -1,13 +1,17 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import Sidebar from '@/components/Sidebar';
+import { regenerateAllBusinessSignupLinks } from '@/lib/customerRankUtils';
+import { RefreshCw, CheckCircle, AlertCircle } from 'lucide-react';
 
 export default function BusinessDashboardPage() {
   const { user, userRole, loading } = useAuth();
   const router = useRouter();
+  const [regeneratingLinks, setRegeneratingLinks] = useState(false);
+  const [regenerateStatus, setRegenerateStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   useEffect(() => {
     if (!loading) {
@@ -18,6 +22,24 @@ export default function BusinessDashboardPage() {
       }
     }
   }, [user, userRole, loading, router]);
+
+  const handleRegenerateSignupLinks = async () => {
+    if (!userRole?.businessId) return;
+    
+    try {
+      setRegeneratingLinks(true);
+      setRegenerateStatus('idle');
+      await regenerateAllBusinessSignupLinks(userRole.businessId);
+      setRegenerateStatus('success');
+      setTimeout(() => setRegenerateStatus('idle'), 3000);
+    } catch (error) {
+      console.error('Error regenerating signup links:', error);
+      setRegenerateStatus('error');
+      setTimeout(() => setRegenerateStatus('idle'), 3000);
+    } finally {
+      setRegeneratingLinks(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -73,6 +95,46 @@ export default function BusinessDashboardPage() {
               </div>
             </div>
           )}
+
+          {/* Utility Section */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Utility Tools</h3>
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="text-sm font-medium text-gray-900">Regenerate Signup Links</h4>
+                <p className="text-sm text-gray-600 mt-1">
+                  Update all your customer rank signup links to use the current domain. Use this when your app domain changes.
+                </p>
+              </div>
+              <button
+                onClick={handleRegenerateSignupLinks}
+                disabled={regeneratingLinks}
+                className="bg-navy-blue hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-200"
+              >
+                {regeneratingLinks ? (
+                  <RefreshCw className="h-4 w-4 animate-spin" />
+                ) : (
+                  <RefreshCw className="h-4 w-4" />
+                )}
+                <span>{regeneratingLinks ? 'Regenerating...' : 'Regenerate Links'}</span>
+              </button>
+            </div>
+            
+            {/* Status Messages */}
+            {regenerateStatus === 'success' && (
+              <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg flex items-center space-x-2">
+                <CheckCircle className="h-5 w-5 text-green-600" />
+                <span className="text-green-800 text-sm">All signup links have been successfully updated!</span>
+              </div>
+            )}
+            
+            {regenerateStatus === 'error' && (
+              <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center space-x-2">
+                <AlertCircle className="h-5 w-5 text-red-600" />
+                <span className="text-red-800 text-sm">Error updating signup links. Please try again.</span>
+              </div>
+            )}
+          </div>
 
           {/* Quick Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
