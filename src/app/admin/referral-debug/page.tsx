@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Users, RefreshCw, AlertCircle, CheckCircle } from 'lucide-react';
 
@@ -98,7 +98,7 @@ export default function ReferralDebugPage() {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [loadData]);
 
   if (loading || loadingData) {
     return (

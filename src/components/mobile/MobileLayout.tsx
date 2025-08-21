@@ -24,7 +24,7 @@ interface MobileLayoutProps {
 export default function MobileLayout({ children, userType }: MobileLayoutProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const { userRole } = useAuth();
+
   const [showMenu, setShowMenu] = useState(false);
 
 

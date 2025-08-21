@@ -94,7 +94,7 @@ export default function ReferralSetupPage() {
                     Create Referral Ranks
                   </h2>
                   <p className="text-gray-600 mb-4">
-                    This will create a permanent "Referral" customer rank for all existing businesses. 
+                    This will create a permanent &quot;Referral&quot; customer rank for all existing businesses. 
                     This rank is required for the referral system to work properly.
                   </p>
                   
@@ -181,7 +181,7 @@ export default function ReferralSetupPage() {
                   <div>
                     <p className="font-medium text-gray-900">Automatic Creation</p>
                     <p className="text-sm text-gray-600">
-                      Each business gets a permanent "Referral" customer rank that cannot be deleted.
+                      Each business gets a permanent &quot;Referral&quot; customer rank that cannot be deleted.
                     </p>
                   </div>
                 </div>
@@ -205,7 +205,7 @@ export default function ReferralSetupPage() {
                   <div>
                     <p className="font-medium text-gray-900">Business Management</p>
                     <p className="text-sm text-gray-600">
-                      Business owners can view and manage customers in the "Referral" rank through their dashboard.
+                      Business owners can view and manage customers in the &quot;Referral&quot; rank through their dashboard.
                     </p>
                   </div>
                 </div>

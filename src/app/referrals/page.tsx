@@ -11,7 +11,6 @@ import {
   Check,
   Clock,
   Award,
-  TrendingUp,
   Gift,
   ArrowLeft
 } from 'lucide-react';
@@ -47,7 +46,7 @@ export default function ReferralsPage() {
     }
 
     loadReferralData();
-  }, [user, userRole, loading, router]);
+  }, [user, userRole, loading, router, loadReferralData]);
 
   const loadReferralData = async () => {
     if (!user || !userRole) return;
@@ -360,7 +359,7 @@ export default function ReferralsPage() {
                         <span className="text-orange font-bold text-lg">2</span>
                       </div>
                       <h3 className="font-medium text-gray-900 mb-2">Friends Join</h3>
-                      <p className="text-sm text-gray-600">When they sign up using your link, they automatically get the "Referral" rank</p>
+                      <p className="text-sm text-gray-600">When they sign up using your link, they automatically get the &quot;Referral&quot; rank</p>
                     </div>
                     
                     <div className="text-center">

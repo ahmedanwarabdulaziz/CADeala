@@ -6,8 +6,6 @@ import {
   Share2, 
   Copy, 
   Users, 
-  Gift, 
-  TrendingUp,
   Check,
   Clock,
   Award
@@ -29,7 +27,7 @@ export default function ReferralDashboard() {
   const [referralStats, setReferralStats] = useState<ReferralStats | null>(null);
   const [referralHistory, setReferralHistory] = useState<Referral[]>([]);
   const [loading, setLoading] = useState(true);
-  const [generatingCode, setGeneratingCode] = useState(false);
+
   const [copySuccess, setCopySuccess] = useState(false);
   const [shareSuccess, setShareSuccess] = useState(false);
 
@@ -37,7 +35,7 @@ export default function ReferralDashboard() {
     if (user && userRole) {
       loadReferralData();
     }
-  }, [user, userRole]);
+  }, [user, userRole, loadReferralData]);
 
   const loadReferralData = async () => {
     if (!user || !userRole) return;
@@ -341,7 +339,7 @@ export default function ReferralDashboard() {
              </div>
              <div>
                <p className="font-medium text-gray-900">Friends Join</p>
-               <p className="text-sm text-gray-600">When they complete signup using your link, they get the "Referral" rank and you earn a successful referral</p>
+                               <p className="text-sm text-gray-600">When they complete signup using your link, they get the &quot;Referral&quot; rank and you earn a successful referral</p>
              </div>
            </div>
           

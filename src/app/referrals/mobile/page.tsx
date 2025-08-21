@@ -44,7 +44,7 @@ export default function ReferralsMobile() {
     }
 
     loadReferralData();
-  }, [user, userRole, loading, router]);
+  }, [user, userRole, loading, router, loadReferralData]);
 
   const loadReferralData = async () => {
     if (!user || !userRole) return;
@@ -349,7 +349,7 @@ export default function ReferralsMobile() {
               </div>
               <div>
                 <p className="font-medium text-gray-900 text-sm">Friends Join</p>
-                <p className="text-xs text-gray-600">When they sign up using your link, they automatically get the "Referral" rank</p>
+                                 <p className="text-xs text-gray-600">When they sign up using your link, they automatically get the &quot;Referral&quot; rank</p>
               </div>
             </div>
             
