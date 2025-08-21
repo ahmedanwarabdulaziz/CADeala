@@ -17,9 +17,9 @@ import {
   Calendar,
   Mail,
   Phone,
-  Filter,
-  RefreshCw
+  Filter
 } from 'lucide-react';
+import LoadingDots from '@/components/LoadingDots';
 
 export default function CustomersMobile() {
   const { userRole, loading } = useAuth();
@@ -133,7 +133,7 @@ export default function CustomersMobile() {
         <div className="p-4">
           <div className="flex items-center justify-center h-64">
             <div className="text-center">
-              <RefreshCw className="h-8 w-8 text-orange animate-spin mx-auto mb-2" />
+              <LoadingDots size="lg" color="text-orange" className="mb-4" />
               <p className="text-gray-600">Loading...</p>
             </div>
           </div>
@@ -293,7 +293,7 @@ export default function CustomersMobile() {
           
           {loadingData ? (
             <div className="p-8 text-center">
-              <RefreshCw className="h-8 w-8 text-orange animate-spin mx-auto mb-2" />
+              <LoadingDots size="lg" color="text-orange" className="mb-4" />
               <p className="text-gray-600">Loading customers...</p>
             </div>
           ) : filteredAndSortedCustomers.length === 0 ? (

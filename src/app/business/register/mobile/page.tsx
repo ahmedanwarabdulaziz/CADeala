@@ -18,9 +18,9 @@ import {
   Phone,
   MapPin,
   FileText,
-  Camera,
-  RefreshCw
+  Camera
 } from 'lucide-react';
+import LoadingDots from '@/components/LoadingDots';
 
 interface Industry {
   id: string;
@@ -257,7 +257,7 @@ export default function BusinessRegisterMobile() {
         <div className="p-4">
           <div className="flex items-center justify-center h-64">
             <div className="text-center">
-              <RefreshCw className="h-8 w-8 text-orange animate-spin mx-auto mb-2" />
+              <LoadingDots size="lg" color="text-orange" className="mb-4" />
               <p className="text-gray-600">Loading...</p>
             </div>
           </div>
@@ -577,7 +577,7 @@ export default function BusinessRegisterMobile() {
         {uploadProgress && (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
             <div className="flex items-center space-x-2">
-              <RefreshCw className="h-4 w-4 text-blue-600 animate-spin" />
+              <LoadingDots size="sm" color="text-blue-600" />
               <span className="text-sm text-blue-800">{uploadProgress}</span>
             </div>
           </div>
@@ -610,7 +610,7 @@ export default function BusinessRegisterMobile() {
             >
               {submitting ? (
                 <>
-                  <RefreshCw className="h-4 w-4 animate-spin" />
+                  <LoadingDots size="sm" color="text-white" />
                   <span>Submitting...</span>
                 </>
               ) : (
