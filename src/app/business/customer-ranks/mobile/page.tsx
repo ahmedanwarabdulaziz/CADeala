@@ -22,15 +22,10 @@ import {
   Trash2, 
   QrCode, 
   Copy, 
-  Download, 
   Users, 
-  Eye, 
-  EyeOff,
   RefreshCw,
   Check,
-  X,
-  Crown,
-  Settings
+  Crown
 } from 'lucide-react';
 
 export default function CustomerRanksMobile() {
@@ -133,8 +128,11 @@ export default function CustomerRanksMobile() {
 
   const handleToggleStatus = async (rankId: string) => {
     try {
-      await toggleCustomerRankStatus(rankId);
-      await loadCustomerRanks();
+      const rank = customerRanks.find(r => r.id === rankId);
+      if (rank) {
+        await toggleCustomerRankStatus(rankId, !rank.isActive);
+        await loadCustomerRanks();
+      }
     } catch (error) {
       console.error('Error toggling rank status:', error);
     }
