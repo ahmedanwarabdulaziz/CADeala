@@ -25,13 +25,29 @@ export default function MobileLayout({ children, userType }: MobileLayoutProps) 
   const pathname = usePathname();
   const { userRole, logout } = useAuth();
   const [showMenu, setShowMenu] = useState(false);
+  const [isSigningOut, setIsSigningOut] = useState(false);
 
   const handleSignOut = async () => {
+    if (isSigningOut) return; // Prevent multiple clicks
+    
     try {
-      await logout();
+      setIsSigningOut(true);
+      console.log('Signing out...');
+      
+      if (logout) {
+        await logout();
+        console.log('Sign out successful, redirecting...');
+      } else {
+        console.warn('Logout function not available, redirecting anyway...');
+      }
+      
       router.push('/signin');
     } catch (error) {
       console.error('Error signing out:', error);
+      // Still try to redirect even if logout fails
+      router.push('/signin');
+    } finally {
+      setIsSigningOut(false);
     }
   };
 
@@ -234,10 +250,17 @@ export default function MobileLayout({ children, userType }: MobileLayoutProps) 
                 <div className="border-t border-gray-200 pt-2 mt-2">
                   <button
                     onClick={handleSignOut}
-                    className="flex items-center w-full px-3 py-3 text-left text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
+                    disabled={isSigningOut}
+                    className="flex items-center w-full px-3 py-3 text-left text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <LogOut className="h-5 w-5 mr-3" />
-                    <span className="font-medium">Sign Out</span>
+                    {isSigningOut ? (
+                      <div className="h-5 w-5 mr-3 animate-spin rounded-full border-2 border-red-600 border-t-transparent" />
+                    ) : (
+                      <LogOut className="h-5 w-5 mr-3" />
+                    )}
+                    <span className="font-medium">
+                      {isSigningOut ? 'Signing Out...' : 'Sign Out'}
+                    </span>
                   </button>
                 </div>
               </div>
