@@ -23,20 +23,21 @@ export default function ResponsiveWrapper({
       setIsLoading(false);
     };
 
+    // Check immediately
     checkMobile();
+    
+    // Add event listener for resize
     window.addEventListener('resize', checkMobile);
 
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Show loading state
+  // Show loading state - but don't block rendering
   if (isLoading) {
+    // Return desktop version by default to avoid hydration issues
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange mx-auto"></div>
-          <p className="mt-2 text-gray-600">Loading...</p>
-        </div>
+      <div className="hidden lg:block">
+        {children}
       </div>
     );
   }
