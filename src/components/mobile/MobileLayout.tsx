@@ -34,24 +34,21 @@ export default function MobileLayout({ children, userType }: MobileLayoutProps) 
     
     try {
       setIsSigningOut(true);
-      console.log('Signing out...', { logout: typeof logout, userRole });
+      console.log('Starting sign out process...');
       
-      // Try context logout first
-      if (logout && typeof logout === 'function') {
-        await logout();
-        console.log('Sign out successful via context, redirecting...');
-      } else {
-        // Fallback to direct Firebase auth
-        console.warn('Context logout not available, using direct Firebase auth...');
-        await signOut(auth);
-        console.log('Sign out successful via direct Firebase auth, redirecting...');
-      }
+      // Clear any local storage or session data
+      localStorage.clear();
+      sessionStorage.clear();
       
-      // Force redirect to signin page
+      // Sign out from Firebase directly
+      await signOut(auth);
+      console.log('Firebase sign out completed');
+      
+      // Force page reload to clear all state
       window.location.href = '/signin';
     } catch (error) {
-      console.error('Error signing out:', error);
-      // Still try to redirect even if logout fails
+      console.error('Error during sign out:', error);
+      // Force redirect anyway
       window.location.href = '/signin';
     } finally {
       setIsSigningOut(false);
@@ -181,6 +178,18 @@ export default function MobileLayout({ children, userType }: MobileLayoutProps) 
           </div>
           
           <div className="flex items-center space-x-2">
+            <button
+              onClick={handleSignOut}
+              disabled={isSigningOut}
+              className="p-1 text-gray-600 hover:text-red-600 transition-colors"
+              title="Sign Out"
+            >
+              {isSigningOut ? (
+                <div className="h-5 w-5 animate-spin rounded-full border-2 border-red-600 border-t-transparent" />
+              ) : (
+                <LogOut className="h-5 w-5" />
+              )}
+            </button>
             <div className="h-8 w-8 rounded-full bg-navy-blue flex items-center justify-center">
               <span className="text-white font-semibold text-sm">
                 {userRole?.name?.charAt(0).toUpperCase()}
