@@ -1,13 +1,15 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import "./mobile.css";
 import { AuthProvider } from "@/contexts/AuthContext";
+import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "CADeala Gift Cards",
-  description: "Your trusted gift card platform",
+  description: "Your trusted gift card platform - Buy, sell, and manage gift cards with ease",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -16,6 +18,41 @@ export const metadata: Metadata = {
   },
   formatDetection: {
     telephone: false,
+  },
+  // PWA meta tags
+  applicationName: "CADeala",
+  authors: [{ name: "CADeala Team" }],
+  generator: "Next.js",
+  keywords: ["gift cards", "business", "finance", "shopping"],
+  referrer: "origin-when-cross-origin",
+  colorScheme: "light",
+  creator: "CADeala",
+  publisher: "CADeala",
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "CADeala Gift Cards",
+    description: "Your trusted gift card platform",
+    url: "https://cadeala.com",
+    siteName: "CADeala",
+    images: [
+      {
+        url: "/CADEALA LOGO.png",
+        width: 512,
+        height: 512,
+        alt: "CADeala Logo",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CADeala Gift Cards",
+    description: "Your trusted gift card platform",
+    images: ["/CADEALA LOGO.png"],
   },
 };
 
@@ -35,15 +72,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="apple-touch-icon" href="/icon.svg" />
+        <link rel="apple-touch-icon" href="/CADEALA LOGO.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="CADeala" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="theme-color" content="#f27921" />
+        <meta name="msapplication-TileColor" content="#f27921" />
+        <meta name="msapplication-config" content="/browserconfig.xml" />
       </head>
       <body className={inter.className}>
         <AuthProvider>
           {children}
         </AuthProvider>
+        <PWAInstallPrompt />
       </body>
     </html>
   );

@@ -1,23 +1,20 @@
 {
   "name": "CADeala Gift Cards",
   "short_name": "CADeala",
-  "description": "Your trusted gift card platform",
+  "description": "Your trusted gift card platform - Buy, sell, and manage gift cards with ease",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#274290",
   "theme_color": "#f27921",
   "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["business", "finance", "shopping"],
   "icons": [
     {
       "src": "/CADEALA LOGO.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
       "purpose": "maskable any"
     }
   ]

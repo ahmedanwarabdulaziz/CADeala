@@ -1,0 +1,111 @@
+/* Mobile PWA Optimizations */
+
+/* Prevent zoom on input focus */
+@media screen and (max-width: 768px) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}
+
+/* Hide scrollbars on mobile for cleaner look */
+@media screen and (max-width: 768px) {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  
+  * {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Optimize touch targets */
+@media screen and (max-width: 768px) {
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* PWA specific styles */
+@media (display-mode: standalone) {
+  /* Hide browser UI elements when in standalone mode */
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  
+  /* Ensure content doesn't get hidden behind status bar */
+  .fixed-top {
+    top: env(safe-area-inset-top);
+  }
+  
+  .fixed-bottom {
+    bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Prevent text selection on mobile for better UX */
+@media screen and (max-width: 768px) {
+  * {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Allow text selection in inputs and textareas */
+  input, textarea, [contenteditable="true"] {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+}
+
+/* Optimize for mobile performance */
+@media screen and (max-width: 768px) {
+  /* Reduce animations on mobile for better performance */
+  * {
+    animation-duration: 0.2s !important;
+    transition-duration: 0.2s !important;
+  }
+  
+  /* Optimize images */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* PWA install prompt positioning */
+.pwa-install-prompt {
+  position: fixed;
+  bottom: env(safe-area-inset-bottom, 1rem);
+  left: 1rem;
+  right: 1rem;
+  z-index: 9999;
+}
+
+/* Mobile navigation optimizations */
+@media screen and (max-width: 768px) {
+  /* Ensure sidebar doesn't interfere with mobile navigation */
+  .sidebar {
+    z-index: 1000;
+  }
+  
+  /* Optimize mobile menu */
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+  }
+}
