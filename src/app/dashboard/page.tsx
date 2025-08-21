@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { collection, query, where, getDocs } from 'firebase/firestore';
@@ -22,6 +22,45 @@ export default function DashboardPage() {
   const [businessApplication, setBusinessApplication] = useState<BusinessApplication | null>(null);
   const [loadingApplication, setLoadingApplication] = useState(true);
 
+  const fetchBusinessApplication = useCallback(async () => {
+    if (!user) return;
+    
+    try {
+      setLoadingApplication(true);
+      const q = query(
+        collection(db, 'businessRegistrations'),
+        where('userId', '==', user.uid)
+      );
+      
+      const snapshot = await getDocs(q);
+      if (!snapshot.empty) {
+        // Sort by creation date and get the most recent application
+        const sortedDocs = snapshot.docs.sort((a, b) => {
+          const aDate = a.data().createdAt?.toDate();
+          const bDate = b.data().createdAt?.toDate();
+          if (!aDate || !bDate) return 0;
+          return bDate.getTime() - aDate.getTime();
+        });
+        
+        const doc = sortedDocs[0];
+        const data = doc.data();
+        setBusinessApplication({
+          id: doc.id,
+          status: data.status,
+          businessName: data.businessName,
+          adminNotes: data.adminNotes,
+          requiredInfo: data.requiredInfo,
+          createdAt: data.createdAt?.toDate(),
+          updatedAt: data.updatedAt?.toDate()
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching business application:', error);
+    } finally {
+      setLoadingApplication(false);
+    }
+  }, [user]);
+
   useEffect(() => {
     if (!loading) {
       if (!user) {
@@ -39,7 +78,7 @@ export default function DashboardPage() {
       }
       // If user exists but userRole is still loading, wait for it
     }
-  }, [user, userRole, loading, router]);
+  }, [user, userRole, loading, router, fetchBusinessApplication]);
 
   // Refresh user role periodically to check for role updates (e.g., when admin approves business application)
   useEffect(() => {
@@ -51,45 +90,6 @@ export default function DashboardPage() {
       return () => clearInterval(interval);
     }
   }, [user, userRole, businessApplication, refreshUserRole]);
-
-  const fetchBusinessApplication = async () => {
-    if (!user) return;
-    
-    try {
-      setLoadingApplication(true);
-                    const q = query(
-                collection(db, 'businessRegistrations'),
-                where('userId', '==', user.uid)
-              );
-      
-                    const snapshot = await getDocs(q);
-              if (!snapshot.empty) {
-                // Sort by creation date and get the most recent application
-                const sortedDocs = snapshot.docs.sort((a, b) => {
-                  const aDate = a.data().createdAt?.toDate();
-                  const bDate = b.data().createdAt?.toDate();
-                  if (!aDate || !bDate) return 0;
-                  return bDate.getTime() - aDate.getTime();
-                });
-                
-                const doc = sortedDocs[0];
-                const data = doc.data();
-                setBusinessApplication({
-                  id: doc.id,
-                  status: data.status,
-                  businessName: data.businessName,
-                  adminNotes: data.adminNotes,
-                  requiredInfo: data.requiredInfo,
-                  createdAt: data.createdAt?.toDate(),
-                  updatedAt: data.updatedAt?.toDate()
-                });
-              }
-    } catch (error) {
-      console.error('Error fetching business application:', error);
-    } finally {
-      setLoadingApplication(false);
-    }
-  };
 
   const handleSignOut = async () => {
     try {
@@ -148,13 +148,10 @@ export default function DashboardPage() {
                 <span className="font-semibold">
                   {userRole.name}
                 </span>
-                <span className="text-xs ml-2 bg-orange px-2 py-1 rounded-full">
-                  {userRole.role}
-                </span>
               </div>
               <button
                 onClick={handleSignOut}
-                className="border-2 border-white text-white hover:bg-white hover:text-navy-blue font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
+                className="bg-orange hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
               >
                 Sign Out
               </button>
@@ -164,166 +161,156 @@ export default function DashboardPage() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="px-4 py-6 sm:px-0">
-          {/* Business Application Status */}
-          {businessApplication && (
-            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                Business Application Status
-              </h2>
-              
-                             <div className="flex items-center mb-4">
-                 <div className={`h-4 w-4 rounded-full mr-3 ${
-                   businessApplication.status === 'approved' ? 'bg-green-500' :
-                   businessApplication.status === 'rejected' ? 'bg-red-500' :
-                   'bg-blue-500'
-                 }`}></div>
-                                 <span className={`text-lg font-semibold ${
-                   businessApplication.status === 'approved' ? 'text-green-700' :
-                   businessApplication.status === 'rejected' ? 'text-red-700' :
-                   'text-blue-700'
-                 }`}>
-                   {businessApplication.status === 'pending' && 'Pending Review'}
-                   {businessApplication.status === 'approved' && 'Approved'}
-                   {businessApplication.status === 'rejected' && 'Rejected'}
-                 </span>
+      <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-gray-900">Customer Dashboard</h2>
+          <p className="text-gray-600 mt-2">Manage your account and business applications</p>
+        </div>
+
+        {/* Business Application Status */}
+        {businessApplication && (
+          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Business Application Status</h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h4 className="text-lg font-medium text-gray-900 mb-2">Application Details</h4>
+                <div className="space-y-2">
+                  <div>
+                    <span className="text-sm font-medium text-gray-500">Business Name:</span>
+                    <span className="ml-2 text-sm text-gray-900">{businessApplication.businessName}</span>
+                  </div>
+                  <div>
+                    <span className="text-sm font-medium text-gray-500">Status:</span>
+                    <span className={`ml-2 inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                      businessApplication.status === 'approved' ? 'bg-green-100 text-green-800' :
+                      businessApplication.status === 'rejected' ? 'bg-red-100 text-red-800' :
+                      businessApplication.status === 'more_info_required' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-blue-100 text-blue-800'
+                    }`}>
+                      {businessApplication.status.replace('_', ' ').toUpperCase()}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-sm font-medium text-gray-500">Submitted:</span>
+                    <span className="ml-2 text-sm text-gray-900">
+                      {businessApplication.createdAt.toLocaleDateString()}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-sm font-medium text-gray-500">Last Updated:</span>
+                    <span className="ml-2 text-sm text-gray-900">
+                      {businessApplication.updatedAt.toLocaleDateString()}
+                    </span>
+                  </div>
+                </div>
               </div>
 
-              <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                <h3 className="font-semibold text-gray-900 mb-2">Business: {businessApplication.businessName}</h3>
-                <p className="text-sm text-gray-600">
-                  Submitted on {businessApplication.createdAt?.toLocaleDateString()}
-                </p>
+              <div>
+                <h4 className="text-lg font-medium text-gray-900 mb-2">Admin Feedback</h4>
+                {businessApplication.adminNotes && (
+                  <div className="bg-gray-50 rounded-lg p-3">
+                    <p className="text-sm text-gray-700">{businessApplication.adminNotes}</p>
+                  </div>
+                )}
+                {businessApplication.requiredInfo && (
+                  <div className="mt-3">
+                    <h5 className="text-sm font-medium text-gray-700 mb-1">Required Information:</h5>
+                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                      <p className="text-sm text-yellow-800">{businessApplication.requiredInfo}</p>
+                    </div>
+                  </div>
+                )}
               </div>
+            </div>
 
-              {businessApplication.adminNotes && (
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                  <h4 className="font-semibold text-blue-900 mb-2">Admin Notes:</h4>
-                  <p className="text-blue-700">{businessApplication.adminNotes}</p>
-                </div>
-              )}
-
-              {businessApplication.requiredInfo && (
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
-                  <h4 className="font-semibold text-yellow-900 mb-2">Additional Information Required:</h4>
-                  <p className="text-yellow-700">{businessApplication.requiredInfo}</p>
-                </div>
-              )}
-
+            {/* Action Buttons */}
+            <div className="mt-6 flex flex-wrap gap-3">
               {businessApplication.status === 'rejected' && (
                 <button
                   onClick={() => router.push('/business/register')}
-                  className="bg-orange hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
+                  className="bg-orange hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
                 >
-                  Apply Again
+                  Submit New Application
                 </button>
               )}
-
-              
+              {businessApplication.status === 'more_info_required' && (
+                <button
+                  onClick={() => router.push('/business/register')}
+                  className="bg-orange hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
+                >
+                  Update Application
+                </button>
+              )}
+              <button
+                onClick={() => router.push('/business/register')}
+                className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
+              >
+                View Application Details
+              </button>
             </div>
-          )}
+          </div>
+        )}
 
-          {/* Customer Dashboard */}
-          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Customer Dashboard
-            </h2>
-            <p className="text-gray-600">
-              Welcome to your CADeala gift card dashboard. This area will be expanded with gift card features soon.
-            </p>
-            
-            <div className="mt-6 p-4 bg-gray-100 rounded-lg">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Coming Soon Features:
-              </h3>
-              <ul className="list-disc list-inside text-gray-600 space-y-1">
-                <li>View your gift card balance</li>
-                <li>Purchase new gift cards</li>
-                <li>Send gift cards to friends and family</li>
-                <li>Transaction history</li>
-                <li>QR code scanning for redemption</li>
-              </ul>
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Account Management</h3>
+            <div className="space-y-3">
+              <button
+                onClick={() => router.push('/business/register')}
+                className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors duration-200"
+              >
+                <div className="font-medium text-gray-900">Update Profile</div>
+                <div className="text-sm text-gray-500">Change your personal information</div>
+              </button>
+              <button
+                onClick={() => router.push('/business/register')}
+                className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors duration-200"
+              >
+                <div className="font-medium text-gray-900">Account Settings</div>
+                <div className="text-sm text-gray-500">Manage your account preferences</div>
+              </button>
             </div>
           </div>
 
-                     {/* Business Upgrade Section */}
-           <div className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-lg p-6">
-             <div className="flex items-center justify-between">
-               <div className="flex-1">
-                 <h3 className="text-xl font-bold text-gray-900 mb-2">
-                   Ready to Grow Your Business?
-                 </h3>
-                 <p className="text-gray-600 mb-4">
-                   Upgrade to a business account and start selling your products and services on CADeala. 
-                   Reach more customers and grow your business with our platform.
-                 </p>
-                 <div className="flex flex-wrap gap-2 mb-4">
-                   <span className="bg-orange-100 text-orange-800 text-xs font-medium px-2 py-1 rounded-full">
-                     Sell Products
-                   </span>
-                   <span className="bg-orange-100 text-orange-800 text-xs font-medium px-2 py-1 rounded-full">
-                     Reach Customers
-                   </span>
-                   <span className="bg-orange-100 text-orange-800 text-xs font-medium px-2 py-1 rounded-full">
-                     Analytics
-                   </span>
-                   <span className="bg-orange-100 text-orange-800 text-xs font-medium px-2 py-1 rounded-full">
-                     Business Tools
-                   </span>
-                 </div>
-                 
-                 {/* Application Status Display */}
-                 {businessApplication && (
-                   <div className="mt-4 p-4 bg-white rounded-lg border border-orange-200">
-                                           <div className="flex items-center mb-2">
-                        <div className={`h-3 w-3 rounded-full mr-2 ${
-                          businessApplication.status === 'approved' ? 'bg-green-500' :
-                          businessApplication.status === 'rejected' ? 'bg-red-500' :
-                          'bg-blue-500'
-                        }`}></div>
-                        <span className={`text-sm font-semibold ${
-                          businessApplication.status === 'approved' ? 'text-green-700' :
-                          businessApplication.status === 'rejected' ? 'text-red-700' :
-                          'text-blue-700'
-                        }`}>
-                          {businessApplication.status === 'pending' && 'Application Pending Review'}
-                          {businessApplication.status === 'approved' && 'Application Approved!'}
-                          {businessApplication.status === 'rejected' && 'Application Rejected'}
-                        </span>
-                     </div>
-                     <p className="text-sm text-gray-600">
-                       Business: {businessApplication.businessName} • Submitted on {businessApplication.createdAt?.toLocaleDateString()}
-                     </p>
-                     {businessApplication.status === 'rejected' && (
-                       <button
-                         onClick={() => router.push('/business/register')}
-                         className="mt-2 bg-orange hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 text-sm"
-                       >
-                         Apply Again
-                       </button>
-                     )}
-                     
-                   </div>
-                 )}
-               </div>
-               <div className="ml-6">
-                 <button
-                   onClick={() => router.push('/business/register')}
-                   disabled={!!businessApplication && businessApplication.status !== 'rejected'}
-                   className={`font-semibold py-3 px-6 rounded-lg transition-colors duration-200 text-lg ${
-                     businessApplication && businessApplication.status !== 'rejected'
-                       ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                       : 'bg-orange hover:bg-orange-600 text-white'
-                   }`}
-                 >
-                                       {businessApplication && businessApplication.status === 'pending' && 'Application Pending'}
-                    {businessApplication && businessApplication.status === 'approved' && 'Approved!'}
-                    {(!businessApplication || businessApplication.status === 'rejected') && 'Upgrade to Business'}
-                 </button>
-               </div>
-             </div>
-           </div>
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Business Services</h3>
+            <div className="space-y-3">
+              <button
+                onClick={() => router.push('/business/register')}
+                className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors duration-200"
+              >
+                <div className="font-medium text-gray-900">Register Business</div>
+                <div className="text-sm text-gray-500">Apply to become a business partner</div>
+              </button>
+              <button
+                onClick={() => router.push('/business/register')}
+                className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors duration-200"
+              >
+                <div className="font-medium text-gray-900">Help & Support</div>
+                <div className="text-sm text-gray-500">Get help with your account</div>
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
+            <div className="space-y-3">
+              <div className="p-3 rounded-lg bg-gray-50">
+                <div className="text-sm font-medium text-gray-900">Account Created</div>
+                <div className="text-xs text-gray-500">Welcome to CADeala!</div>
+              </div>
+              {businessApplication && (
+                <div className="p-3 rounded-lg bg-gray-50">
+                  <div className="text-sm font-medium text-gray-900">Business Application</div>
+                  <div className="text-xs text-gray-500">
+                    Status: {businessApplication.status.replace('_', ' ').toUpperCase()}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </main>
     </div>

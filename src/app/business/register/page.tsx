@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { collection, addDoc, getDocs, query, where, orderBy } from 'firebase/firestore';
@@ -64,7 +64,7 @@ export default function BusinessRegisterPage() {
     documents: {}
   });
 
-  const checkExistingApplication = async () => {
+  const checkExistingApplication = useCallback(async () => {
     if (!user) return;
     
     try {
@@ -87,7 +87,7 @@ export default function BusinessRegisterPage() {
       // If error, still proceed to fetch categories
       fetchCategories();
     }
-  };
+  }, [user, router]);
 
   useEffect(() => {
     if (!loading) {

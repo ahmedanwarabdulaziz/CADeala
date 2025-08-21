@@ -49,31 +49,31 @@ export default function BusinessDashboardMobile() {
 
   const quickActions = [
     {
-      title: 'Add Customer',
-      description: 'Register a new customer',
-      icon: <Plus className="h-5 w-5" />,
-      onClick: () => router.push('/business/customers/add'),
+      title: 'View Customers',
+      description: 'Manage your customers',
+      icon: <Users className="h-5 w-5" />,
+      onClick: () => router.push('/business/customers'),
       variant: 'primary' as const
     },
     {
-      title: 'Create Rank',
-      description: 'Set up a new customer rank',
+      title: 'Manage Ranks',
+      description: 'Set up customer ranks',
       icon: <Crown className="h-5 w-5" />,
-      onClick: () => router.push('/business/customer-ranks/create'),
+      onClick: () => router.push('/business/customer-ranks'),
       variant: 'primary' as const
     },
     {
-      title: 'View Reports',
-      description: 'Check business analytics',
+      title: 'Business Profile',
+      description: 'Update business info',
       icon: <BarChart3 className="h-5 w-5" />,
-      onClick: () => router.push('/business/analytics'),
+      onClick: () => router.push('/business/register'),
       variant: 'secondary' as const
     },
     {
-      title: 'Settings',
-      description: 'Manage business settings',
+      title: 'Dashboard',
+      description: 'View business overview',
       icon: <Settings className="h-5 w-5" />,
-      onClick: () => router.push('/business/settings'),
+      onClick: () => router.push('/business/dashboard'),
       variant: 'secondary' as const
     }
   ];

@@ -81,7 +81,7 @@ export default function CustomerRanksPage() {
     if (userRole?.businessId) {
       loadCustomerRanks();
     }
-  }, [loadCustomerRanks]);
+  }, [loadCustomerRanks, userRole?.businessId]);
 
   const handleCreateRank = async () => {
     if (!userRole?.businessId || !userRole?.businessReferenceCode) return;

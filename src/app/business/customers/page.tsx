@@ -64,7 +64,7 @@ export default function CustomersPage() {
     if (userRole?.businessId) {
       loadData();
     }
-  }, [loadData]);
+  }, [loadData, userRole?.businessId]);
 
   // Filter and sort customers
   const filteredAndSortedCustomers = customers
