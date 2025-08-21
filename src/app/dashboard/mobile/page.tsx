@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation';
 import {
   User,
   Building,
-  FileText,
   Settings,
   Crown,
   Calendar,
@@ -31,7 +30,7 @@ export default function CustomerDashboardMobile() {
   const { user, userRole, loading } = useAuth();
   const router = useRouter();
   const [businessApplication, setBusinessApplication] = useState<BusinessApplication | null>(null);
-  const [loadingApplication, setLoadingApplication] = useState(true);
+
 
   const fetchBusinessApplication = useCallback(async () => {
     if (!user) return;

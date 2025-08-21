@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { signOut } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+
 import { 
   BarChart3, 
   Crown, 
@@ -25,7 +24,7 @@ interface MobileLayoutProps {
 export default function MobileLayout({ children, userType }: MobileLayoutProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const { userRole, logout } = useAuth();
+  const { userRole } = useAuth();
   const [showMenu, setShowMenu] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
 

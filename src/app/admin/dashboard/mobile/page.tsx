@@ -16,7 +16,6 @@ import LoadingDots from '@/components/LoadingDots';
 export default function AdminDashboardMobile() {
   const { userRole, loading } = useAuth();
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalBusinesses: 0,
@@ -41,7 +40,6 @@ export default function AdminDashboardMobile() {
           pendingApplications: 8,
           totalCategories: 156
         });
-        setIsLoading(false);
       }, 1000);
 
       return () => clearTimeout(timer);
@@ -79,20 +77,20 @@ export default function AdminDashboardMobile() {
     }
   ];
 
-                if (loading || !userRole || userRole.role !== 'Admin') {
-                return (
-                  <MobileLayout userType="admin">
-                    <div className="p-4">
-                      <div className="flex items-center justify-center h-64">
-                        <div className="text-center">
-                          <LoadingDots size="lg" color="text-orange" className="mb-4" />
-                          <p className="text-gray-600">Loading...</p>
-                        </div>
-                      </div>
-                    </div>
-                  </MobileLayout>
-                );
-              }
+  if (loading || !userRole || userRole.role !== 'Admin') {
+    return (
+      <MobileLayout userType="admin">
+        <div className="p-4">
+          <div className="flex items-center justify-center h-64">
+            <div className="text-center">
+              <LoadingDots size="lg" color="text-orange" className="mb-4" />
+              <p className="text-gray-600">Loading...</p>
+            </div>
+          </div>
+        </div>
+      </MobileLayout>
+    );
+  }
 
   return (
     <MobileLayout userType="admin">

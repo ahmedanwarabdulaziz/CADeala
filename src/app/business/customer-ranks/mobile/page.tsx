@@ -23,7 +23,8 @@ import {
   Copy, 
   Users, 
   Check,
-  Crown
+  Crown,
+  RefreshCw
 } from 'lucide-react';
 import LoadingDots from '@/components/LoadingDots';
 

@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import MobileLayout from '@/components/mobile/MobileLayout';
-import { collection, addDoc, getDocs, query, where, orderBy } from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { uploadToImgBB, uploadMultipleToImgBB } from '@/lib/imgbbUtils';
 import { 
@@ -13,11 +13,9 @@ import {
   Upload, 
   X, 
   Check,
-  Building,
   Mail,
   Phone,
   MapPin,
-  FileText,
   Camera
 } from 'lucide-react';
 import LoadingDots from '@/components/LoadingDots';
@@ -54,7 +52,7 @@ interface BusinessRegistration {
 }
 
 export default function BusinessRegisterMobile() {
-  const { user, userRole, loading, logout } = useAuth();
+  const { user, userRole, loading } = useAuth();
   const router = useRouter();
   
   const [currentStep, setCurrentStep] = useState(1);
@@ -62,7 +60,7 @@ export default function BusinessRegisterMobile() {
   const [businessTypes, setBusinessTypes] = useState<BusinessType[]>([]);
   const [loadingData, setLoadingData] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [uploadingFiles, setUploadingFiles] = useState(false);
+
   const [uploadProgress, setUploadProgress] = useState<string>('');
   
   const [formData, setFormData] = useState<BusinessRegistration>({
@@ -114,7 +112,7 @@ export default function BusinessRegisterMobile() {
         checkExistingApplication();
       }
     }
-  }, [user, userRole, loading, checkExistingApplication]);
+  }, [user, userRole, loading, checkExistingApplication, router]);
 
   const fetchCategories = async () => {
     try {
