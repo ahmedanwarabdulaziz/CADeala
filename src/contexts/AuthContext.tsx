@@ -1,14 +1,14 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
+import { User, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, phone?: string) => Promise<void>;
+  signUp: (email: string, password: string, name: string, phone?: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -35,14 +35,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const signUp = async (email: string, password: string, phone?: string) => {
+  const signUp = async (email: string, password: string, name: string, phone?: string) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       
-      // If phone number is provided, you can update the user profile here
-      if (phone && userCredential.user) {
-        // You might want to store phone in Firestore instead
-        // await updateProfile(userCredential.user, { phoneNumber: phone });
+      // Update the user profile with the name
+      if (userCredential.user) {
+        await updateProfile(userCredential.user, {
+          displayName: name
+        });
       }
     } catch (error) {
       throw error;
