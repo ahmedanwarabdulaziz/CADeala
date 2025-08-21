@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import Sidebar from '@/components/Sidebar';
+import ResponsiveWrapper from '@/components/ResponsiveWrapper';
+import BusinessDashboardMobile from './mobile/page';
 import { regenerateAllBusinessSignupLinks } from '@/lib/customerRankUtils';
 import { RefreshCw, CheckCircle, AlertCircle } from 'lucide-react';
 
@@ -58,11 +60,12 @@ export default function BusinessDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Sidebar type="business" currentPage="dashboard" />
+    <ResponsiveWrapper mobileComponent={<BusinessDashboardMobile />}>
+      <div className="min-h-screen bg-gray-50">
+        <Sidebar type="business" currentPage="dashboard" />
 
-      {/* Main Content */}
-      <main className="lg:ml-64 min-h-screen relative">
+        {/* Main Content */}
+        <main className="lg:ml-64 min-h-screen relative">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 pt-20 lg:pt-6">
           {/* Welcome Section */}
           <div className="mb-8">
@@ -272,5 +275,6 @@ export default function BusinessDashboardPage() {
         </div>
       </main>
     </div>
+    </ResponsiveWrapper>
   );
 }
