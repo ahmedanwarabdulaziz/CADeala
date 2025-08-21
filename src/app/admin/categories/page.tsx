@@ -56,7 +56,7 @@ interface ProductCategory {
 type CategoryLevel = 'industry' | 'businessType' | 'serviceCategory' | 'productCategory';
 
 export default function CategoriesPage() {
-  const { user, userRole, loading, logout } = useAuth();
+  const { user, userRole, loading } = useAuth();
   const router = useRouter();
   
   // Data states

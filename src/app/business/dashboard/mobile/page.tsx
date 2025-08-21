@@ -126,7 +126,7 @@ export default function BusinessDashboardMobile() {
             Welcome back, {userRole?.name}!
           </h2>
           <p className="text-orange-100 text-sm">
-            Here's what's happening with your business today
+            Here&apos;s what&apos;s happening with your business today
           </p>
         </div>
 
