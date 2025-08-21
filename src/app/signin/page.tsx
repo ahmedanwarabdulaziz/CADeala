@@ -97,13 +97,24 @@ export default function SignInPage() {
             </button>
           </div>
 
-          <div className="text-center">
-            <p className="text-sm text-gray-600">
-              Don&apos;t have an account?{' '}
-              <Link href="/signup" className="font-medium text-orange hover:text-orange/80">
-                Sign up here
+          <div className="text-center space-y-4">
+            <div>
+              <Link
+                href="/signup"
+                className="text-orange hover:text-orange/80 text-sm font-medium"
+              >
+                Don&apos;t have an account? Sign up
               </Link>
-            </p>
+            </div>
+            
+            <div className="border-t border-gray-200 pt-4">
+              <a
+                href="/install"
+                className="inline-flex items-center text-sm text-gray-600 hover:text-gray-800"
+              >
+                📱 Install CADeala App
+              </a>
+            </div>
           </div>
         </form>
       </div>

@@ -18,6 +18,7 @@ import {
   ShoppingCart,
   CreditCard
 } from 'lucide-react';
+import InstallButton from './InstallButton';
 
 interface SidebarProps {
   type: 'admin' | 'business';
@@ -98,6 +99,11 @@ export default function Sidebar({ type, currentPage = 'dashboard' }: SidebarProp
               {!isCollapsed && (
                 <div>
                   <h1 className="text-lg font-bold text-gray-900">CADeala</h1>
+                  <div className="mt-2">
+                    <InstallButton variant="icon" showInstructions={false} />
+                  </div>
+                </div>
+              )}
                   <p className="text-xs text-gray-500 capitalize">{type}</p>
                 </div>
               )}
