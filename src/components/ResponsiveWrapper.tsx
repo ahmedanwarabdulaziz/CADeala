@@ -14,13 +14,14 @@ export default function ResponsiveWrapper({
   forceMobile = false 
 }: ResponsiveWrapperProps) {
   const [isMobile, setIsMobile] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+    
     const checkMobile = () => {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
-      setIsLoading(false);
     };
 
     // Check immediately
@@ -32,13 +33,19 @@ export default function ResponsiveWrapper({
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Show loading state - but don't block rendering
-  if (isLoading) {
-    // Return desktop version by default to avoid hydration issues
+  // During SSR or before mount, show both versions
+  if (!mounted) {
     return (
-      <div className="hidden lg:block">
-        {children}
-      </div>
+      <>
+        {/* Desktop version */}
+        <div className="hidden lg:block">
+          {children}
+        </div>
+        {/* Mobile version */}
+        <div className="lg:hidden">
+          {mobileComponent || children}
+        </div>
+      </>
     );
   }
 
@@ -65,20 +72,4 @@ export default function ResponsiveWrapper({
   );
 }
 
-// Hook to detect mobile
-export function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(false);
 
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  return isMobile;
-}
