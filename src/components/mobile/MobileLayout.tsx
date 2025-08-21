@@ -258,21 +258,19 @@ export default function MobileLayout({ children, userType }: MobileLayoutProps) 
                   );
                 })}
                 
-                                            <div className="border-t border-gray-200 pt-2 mt-2">
-                              <a
-                                href="/signin"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  localStorage.clear();
-                                  sessionStorage.clear();
-                                  window.location.replace('/signin');
-                                }}
-                                className="flex items-center w-full px-3 py-3 text-left text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
-                              >
-                                <LogOut className="h-5 w-5 mr-3" />
-                                <span className="font-medium">Sign Out</span>
-                              </a>
-                            </div>
+                <div className="border-t border-gray-200 pt-2 mt-2">
+                  <button
+                    onClick={() => {
+                      localStorage.clear();
+                      sessionStorage.clear();
+                      window.location.replace('/signin');
+                    }}
+                    className="flex items-center w-full px-3 py-3 text-left text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
+                  >
+                    <LogOut className="h-5 w-5 mr-3" />
+                    <span className="font-medium">Sign Out</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
