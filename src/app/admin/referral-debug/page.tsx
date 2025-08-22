@@ -106,7 +106,7 @@ export default function ReferralDebugPage() {
   if (loading || loadingData) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Sidebar />
+        <Sidebar type="admin" currentPage="referral-debug" />
         <main className="relative lg:ml-64">
           <div className="pt-20 lg:pt-6 lg:pl-64">
             <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -133,7 +133,7 @@ export default function ReferralDebugPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Sidebar />
+      <Sidebar type="admin" currentPage="referral-debug" />
       <main className="relative lg:ml-64">
         <div className="pt-20 lg:pt-6 lg:pl-64">
           <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
