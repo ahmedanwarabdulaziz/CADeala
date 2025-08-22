@@ -50,7 +50,7 @@ export default function ReferralSetupPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Sidebar />
+        <Sidebar type="admin" currentPage="referral-setup" />
         <main className="relative lg:ml-64">
           <div className="pt-20 lg:pt-6 lg:pl-64">
             <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -66,7 +66,7 @@ export default function ReferralSetupPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Sidebar />
+      <Sidebar type="admin" currentPage="referral-setup" />
       <main className="relative lg:ml-64">
         <div className="pt-20 lg:pt-6 lg:pl-64">
           <div className="max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
